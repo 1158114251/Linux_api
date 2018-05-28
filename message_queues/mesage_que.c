@@ -7,7 +7,7 @@
 
 /*
  *
- *System V ipc ——Message_queues
+ *System V ipc —— Message_queues
  *
  */
 
@@ -40,8 +40,8 @@ int msg_push(int msg_id ,struct _msg * pmsg)
 
 	if (msgsnd(msg_id,pmsg,sizeof(struct _msg )-4, IPC_NOWAIT)<0)
 	{
-		perror("error of send ");
-		exit(-1);
+		perror("error of message_queues send ");
+		return -1;
 	}
 
 	return 0;
@@ -53,8 +53,8 @@ int msg_pop(int msg_id,struct _msg * pmsg)
 
 	if ( msgrcv( msg_id, pmsg, sizeof (struct _msg)-4 ,0,0 ) <0)
 	{
-		perror("error of recv ");
-		exit(-1);
+		perror("error of message_queues send ");
+		return -1;
 	}
 	return 0;
 }
@@ -62,33 +62,39 @@ int msg_pop(int msg_id,struct _msg * pmsg)
 
 int main (int argv ,char **argc)
 {
-        if (argv<2)
-		return -1;
 
 	int msg_id;
+	if (argv<2)
+	{
+		printf("please input send or recv\n");
+		return -1;
+	}
 	if (msg_id =msg_init(),msg_id<0)
 		return -1;
 
-        if(!strcmp(argc[1],"send"))
+	if(!strcmp(argc[1],"send"))
 	{
-	msg.msgtype=10;
-	strcpy(msg.msgtext,"hello world");
-	msg_push(msg_id,&msg);
-        printf("send ok\n");
+		msg.msgtype=10;
+		strcpy(msg.msgtext,"hello world");
+		if(msg_push(msg_id,&msg)<0)
+		return -1;
+		printf("send ok: %s \n",msg.msgtext);
 	}
 	else if(!strcmp(argc[1],"recv"))
 	{
-	
-	msg_pop(msg_id,&msg);
-        printf("recv ok: %s \n",msg.msgtext);
-	
+
+		if(msg_pop(msg_id,&msg)<0)
+		return -1;
+		printf("recv ok: %s \n",msg.msgtext);
+
 	}
 	else
-         {
-	 
-	   printf("input error \n");
+	{
 
-	 }
+		printf("input error \n");
+		return -1;
+
+	}
 
 
 
