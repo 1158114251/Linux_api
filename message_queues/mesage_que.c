@@ -13,6 +13,7 @@
 
 #define SIZE_OF_MSG 2048
 #define KEY_VALUE   1235
+#define SIZE_OF_MSGTYPE 4
 struct _msg
 {
 	long msgtype;
@@ -38,7 +39,7 @@ int msg_push(int msg_id ,struct _msg * pmsg)
 {
 
 
-	if (msgsnd(msg_id,pmsg,sizeof(struct _msg )-4, IPC_NOWAIT)<0)
+	if (msgsnd(msg_id,pmsg,sizeof(struct _msg )-SIZE_OF_MSGTYPE, IPC_NOWAIT)<0)
 	{
 		perror("error of message_queues send ");
 		return -1;
@@ -51,7 +52,7 @@ int msg_push(int msg_id ,struct _msg * pmsg)
 int msg_pop(int msg_id,struct _msg * pmsg)
 {
 
-	if ( msgrcv( msg_id, pmsg, sizeof (struct _msg)-4 ,0,0 ) <0)
+	if ( msgrcv( msg_id, pmsg, sizeof (struct _msg)-SIZE_OF_MSGTYPE,0,0 ) <0)
 	{
 		perror("error of message_queues send ");
 		return -1;
