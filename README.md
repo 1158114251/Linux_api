@@ -15,11 +15,15 @@
  
 4.消息队列（Message Queues）
 
-> 2,3,4 是系统5的进程通信的几种机制
-
 * man msgget
 * man msgop
 * man msgctl
+
+
+
+
+> 2,3,4 是系统5的进程通信的几种机制
+
 * man semget
 * man semop
 * man semctl
